@@ -28,6 +28,12 @@ function Bola(x, y, largura, altura, velocidadeXInicial){
 
 		if(this.y < 0 || this.y > altura-this.altura){
 			this.velocidadeY *= -1;
+			if(this.y <= 0){
+				this.y += 5;
+			}
+			else if(this.y > altura-this.altura){
+				this.y -= 5;
+			}
 		}
 	};
 
