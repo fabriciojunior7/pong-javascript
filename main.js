@@ -11,12 +11,15 @@ function setup(){
 	jogador2 = new Jogador((largura - 60), (altura/2 - 35), 12, 70, "&", "(", 255, 0, 0);
 	bola = new Bola((largura/2 - 5), (altura/2 - 5), 10, 10, int(largura*0.007));
 	frames = 60;
-	textSize(38);
 }
 
 function draw(){
 	frameRate(frames);
 	background(0, 0, 0);
+	fill(255);
+	textSize(10);
+	text("Fabricio Junior", 5, 15);
+	textSize(38);
 	stroke(255, 255, 255);
 	line(largura/2, 0, largura/2, altura);
 	//Atualizar Posicoes
