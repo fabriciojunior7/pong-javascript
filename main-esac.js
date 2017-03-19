@@ -5,15 +5,28 @@ var tela;
 var logo;
 var score1;
 var score2;
+var pontosMeta;
 
 var iniciar;
 var hit;
-var errou;
+var aplausos;
+var errou, peido1, peido2, peido3, peido4, se_vc_chegar, hector, ta_fedendo, pode_nao, adonai;
+var somAleatorio;
 
 function preload(){
 	iniciar = loadSound("sons/iniciar.mp3");
 	hit = loadSound("sons/hit.mp3");
 	errou = loadSound("sons/errou.mp3");
+	peido1 = loadSound("sons/peido1.mp3");
+	peido2 = loadSound("sons/peido2.mp3");
+	peido3 = loadSound("sons/peido3.mp3");
+	peido4 = loadSound("sons/peido4.mp3");
+	se_vc_chegar = loadSound("sons/se-vc-chegar.mp3");
+	hector = loadSound("sons/hector.mp3");
+	ta_fedendo = loadSound("sons/ta-fedendo.mp3");
+	pode_nao = loadSound("sons/pode-nao.mp3");
+	adonai = loadSound("sons/adonai.mp3");
+	aplausos = loadSound("sons/aplausos.mp3");
 }
 
 function setup(){
@@ -29,6 +42,7 @@ function setup(){
 	frames = 60;
 	score1Y = 40;
 	score2Y = 40;
+	pontosMeta = 5;
 }
 
 function draw(){
@@ -45,26 +59,26 @@ function draw(){
 	jogador2.atualizarPosicao();
 	bola.atualizarPosicao(altura);
 	if(bola.x < 0){
-		errou.play();
+		perdeuSom();
 		jogador2.score++;
 		bola.movimentar = false;
 		bola.x = largura/2 - 5;
 		bola.y = altura/2 - 5;
 		bola.velocidadeX = bola.velocidadeXInicial;
 		bola.velocidadeY = 0;
-		if(jogador2.score >= 5){
+		if(jogador2.score >= pontosMeta){
 			fim(2);
 		}
 	}
 	else if(bola.x > largura){
-		errou.play();
+		perdeuSom();
 		jogador1.score++;
 		bola.movimentar = false;
 		bola.x = largura/2 - 5;
 		bola.y = altura/2 - 5;
 		bola.velocidadeX = -bola.velocidadeXInicial;
 		bola.velocidadeY = 0;
-		if(jogador1.score >= 5){
+		if(jogador1.score >= pontosMeta){
 			fim(1);
 		}
 	}
@@ -98,9 +112,6 @@ function draw(){
 function keyPressed(){
 	jogador1.botaoPressionado(key);
 	jogador2.botaoPressionado(key);
-	if(keyCode == 36){
-		window.location.href = "ping-pong-esac.html";
-	}
 }
 
 function keyReleased(){
@@ -111,12 +122,50 @@ function keyReleased(){
 	}
 }
 
+function perdeuSom(){
+	somAleatorio = int(random(1, 11));
+	if(somAleatorio == 1 || somAleatorio == 2){
+		errou.play();
+	}
+	else if(somAleatorio == 3){
+		peido1.play();
+	}
+	else if(somAleatorio == 4){
+		peido2.play();
+	}
+	else if(somAleatorio == 5){
+		peido3.play();
+	}
+	else if(somAleatorio == 6){
+		peido4.play();
+	}
+	else if(somAleatorio == 7){
+		hector.play();
+	}
+	else if(somAleatorio == 8){
+		ta_fedendo.play();
+	}
+	else if(somAleatorio == 9){
+		pode_nao.play();
+	}
+	else if(somAleatorio == 10){
+		adonai.play();
+	}
+}
+
 function fim(vencedor) {
 	jogador1.y = 2*altura;
 	jogador2.y = 2*altura;
 	bola.y = 2*altura;
 	score1Y = 2*altura;
 	score2Y = 2*altura;
+	somAleatorio = int(random(1, 4));
+	if(somAleatorio == 1 || somAleatorio == 2){
+		aplausos.play();
+	}
+	else if(somAleatorio == 3){
+		se_vc_chegar.play();
+	}
 	if(vencedor == 1){
 		background(jogador1.r, jogador1.g, jogador1.b);
 		fill(255);

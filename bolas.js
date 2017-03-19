@@ -6,12 +6,13 @@ function Bola(x, y, largura, altura, velocidadeXInicial){
 	this.altura = altura;
 	this.velocidadeXInicial = velocidadeXInicial;
 	this.velocidadeX = this.velocidadeXInicial;
-	this.velocidadeXMAX = 20.0
+	this.velocidadeXMAX = 25.0
 	this.velocidadeY = 0.0;
 	this.r = 255;
 	this.g = 255;
 	this.b = 255;
 	this.movimentar = false;
+	this.crescerVelocidadeX = 0.75;
 
 	//Metodos
 	this.desenhar = function(){
@@ -41,10 +42,10 @@ function Bola(x, y, largura, altura, velocidadeXInicial){
 		//Eixo X
 		this.velocidadeX *= -1;
 		if(this.velocidadeX > 0 && this.velocidadeX < this.velocidadeXMAX){
-			this.velocidadeX += 0.5;
+			this.velocidadeX += this.crescerVelocidadeX;
 		}
 		else if(this.velocidadeX < 0 && this.velocidadeX > -this.velocidadeXMAX){
-			this.velocidadeX -= 0.5;
+			this.velocidadeX -= this.crescerVelocidadeX;
 		}
 
 		//Eixo Y
