@@ -118,6 +118,9 @@ function draw(){
 function keyPressed(){
 	jogador1.botaoPressionado(key);
 	jogador2.botaoPressionado(key);
+	if(keyCode == 36){
+		window.location.href = "ping-pong.html";
+	}
 }
 
 function keyReleased(){
