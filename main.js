@@ -7,13 +7,17 @@ var score1;
 var score2;
 
 var iniciar;
+var start;
 var hit;
-var errou;
+var lose;
+var win;
 
 function preload(){
 	iniciar = loadSound("sons/iniciar.mp3");
+	start = loadSound("sons/start.mp3");
 	hit = loadSound("sons/hit.mp3");
-	errou = loadSound("sons/errou.mp3");
+	win = loadSound("sons/you-win.mp3");
+	lose = loadSound("sons/lose.mp3");
 }
 
 function setup(){
@@ -45,7 +49,6 @@ function draw(){
 	jogador2.atualizarPosicao();
 	bola.atualizarPosicao(altura);
 	if(bola.x < 0){
-		errou.play();
 		jogador2.score++;
 		bola.movimentar = false;
 		bola.x = largura/2 - 5;
@@ -55,9 +58,11 @@ function draw(){
 		if(jogador2.score >= 5){
 			fim(2);
 		}
+		else{
+			lose.play();
+		}
 	}
 	else if(bola.x > largura){
-		errou.play();
 		jogador1.score++;
 		bola.movimentar = false;
 		bola.x = largura/2 - 5;
@@ -66,6 +71,9 @@ function draw(){
 		bola.velocidadeY = 0;
 		if(jogador1.score >= 5){
 			fim(1);
+		}
+		else{
+			lose.play();
 		}
 	}
 	//Desenhar
@@ -106,25 +114,27 @@ function keyPressed(){
 function keyReleased(){
 	jogador1.botaoSolto(key);
 	jogador2.botaoSolto(key);
-	if(key == " "){
+	if(key == " " && bola.movimentar == false){
+		start.play();
 		bola.movimentar = true;
 	}
 }
 
 function fim(vencedor) {
+	win.play();
 	jogador1.y = 2*altura;
 	jogador2.y = 2*altura;
 	bola.y = 2*altura;
 	score1Y = 2*altura;
 	score2Y = 2*altura;
 	if(vencedor == 1){
-		background(jogador1.r, jogador1.g, jogador1.b);
+		background(0, 255, 0);
 		fill(255);
 		textSize(50);
 		text("Verde Venceu!", largura/2-150, altura/2);
 	}
 	else if(vencedor == 2){
-		background(jogador2.r, jogador2.g, jogador2.b);
+		background(255, 0, 0);
 		fill(255);
 		textSize(50);
 		text("Vermelho Venceu!", largura/2-190, altura/2);

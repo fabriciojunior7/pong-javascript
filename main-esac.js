@@ -8,6 +8,7 @@ var score2;
 var pontosMeta;
 
 var iniciar;
+var start;
 var hit;
 var aplausos;
 var errou, peido1, peido2, peido3, peido4, se_vc_chegar, hector, ta_fedendo, pode_nao, adonai;
@@ -15,6 +16,7 @@ var somAleatorio;
 
 function preload(){
 	iniciar = loadSound("sons/iniciar.mp3");
+	start = loadSound("sons/start.mp3");
 	hit = loadSound("sons/hit.mp3");
 	errou = loadSound("sons/errou.mp3");
 	peido1 = loadSound("sons/peido1.mp3");
@@ -59,7 +61,6 @@ function draw(){
 	jogador2.atualizarPosicao();
 	bola.atualizarPosicao(altura);
 	if(bola.x < 0){
-		perdeuSom();
 		jogador2.score++;
 		bola.movimentar = false;
 		bola.x = largura/2 - 5;
@@ -69,9 +70,11 @@ function draw(){
 		if(jogador2.score >= pontosMeta){
 			fim(2);
 		}
+		else{
+			perdeuSom();
+		}
 	}
 	else if(bola.x > largura){
-		perdeuSom();
 		jogador1.score++;
 		bola.movimentar = false;
 		bola.x = largura/2 - 5;
@@ -80,6 +83,9 @@ function draw(){
 		bola.velocidadeY = 0;
 		if(jogador1.score >= pontosMeta){
 			fim(1);
+		}
+		else{
+			perdeuSom();
 		}
 	}
 	//Desenhar
@@ -117,7 +123,8 @@ function keyPressed(){
 function keyReleased(){
 	jogador1.botaoSolto(key);
 	jogador2.botaoSolto(key);
-	if(key == " "){
+	if(key == " " && bola.movimentar == false){
+		start.play();
 		bola.movimentar = true;
 	}
 }
@@ -159,21 +166,26 @@ function fim(vencedor) {
 	bola.y = 2*altura;
 	score1Y = 2*altura;
 	score2Y = 2*altura;
-	somAleatorio = int(random(1, 4));
-	if(somAleatorio == 1 || somAleatorio == 2){
+
+	//Som
+	somAleatorio = int(random(1, 3));
+	if(somAleatorio == 1){
+		aplausos.setVolume(0.2);
 		aplausos.play();
 	}
-	else if(somAleatorio == 3){
+	else if(somAleatorio == 2){
+
 		se_vc_chegar.play();
 	}
+
 	if(vencedor == 1){
-		background(jogador1.r, jogador1.g, jogador1.b);
+		background(0, 255, 0);
 		fill(255);
 		textSize(50);
 		text("Verde Venceu!", largura/2-150, altura/2);
 	}
 	else if(vencedor == 2){
-		background(jogador2.r, jogador2.g, jogador2.b);
+		background(255, 0, 0);
 		fill(255);
 		textSize(50);
 		text("Vermelho Venceu!", largura/2-190, altura/2);

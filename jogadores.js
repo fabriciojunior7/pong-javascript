@@ -28,6 +28,11 @@ function Jogador(x, y, largura, altura, up, down, r, g, b){
 		if(this.movimentos[1] == true && this.y < windowHeight-this.altura){
 			this.y += this.velocidadeY;
 		}
+		if(this.score >= 4 && frameCount % 2 == 0){
+			this.r = random(100, 255);
+			this.g = random(100, 255);
+			this.b = random(100, 255);
+		}
 	};
 
 	this.botaoPressionado = function(key){
