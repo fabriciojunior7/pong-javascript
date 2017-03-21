@@ -147,7 +147,7 @@ function keyReleased(){
 	jogador1.botaoSolto(key);
 	jogador2.botaoSolto(key);
 	if(key == " " && (jogador1.score >= 5 || jogador2.score >= 5)){
-		window.location.href = "ping-pong.html";
+		window.location.href = "ping-pong-esac.html";
 	}
 	else if(key == " " && bola.movimentar == false){
 		start.play();
