@@ -121,6 +121,9 @@ function keyReleased(){
 		bola.movimentar = true;
 		bola.velocidadeY = random(-4, 4);
 	}
+	if(key == " " && (jogador1.score >= 5 || jogador2.score >= 5)){
+		window.location.href = "ping-pong.html";
+	}
 }
 
 function fim(vencedor) {
