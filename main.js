@@ -117,6 +117,7 @@ function keyReleased(){
 	if(key == " " && bola.movimentar == false){
 		start.play();
 		bola.movimentar = true;
+		bola.velocidadeY = random(-4, 4);
 	}
 }
 
