@@ -146,13 +146,13 @@ function keyPressed(){
 function keyReleased(){
 	jogador1.botaoSolto(key);
 	jogador2.botaoSolto(key);
-	if(key == " " && bola.movimentar == false){
+	if(key == " " && (jogador1.score >= 5 || jogador2.score >= 5)){
+		window.location.href = "ping-pong.html";
+	}
+	else if(key == " " && bola.movimentar == false){
 		start.play();
 		bola.movimentar = true;
-		bola.velocidadeY = random(-6, 6);
-	}
-	if(key == " " && (jogador1.score >= 5 || jogador2.score >= 5)){
-		window.location.href = "ping-pong-esac.html";
+		bola.velocidadeY = random(-4, 4);
 	}
 }
 
