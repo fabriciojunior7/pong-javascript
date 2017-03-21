@@ -90,10 +90,12 @@ function draw(){
 	bolaP2 = collideRectRect(jogador2.x, jogador2.y, jogador2.largura, jogador2.altura, bola.x, bola.y, bola.largura, bola.altura);
 
 	if(bolaP1 == true){
+		bola.x = jogador1.x + jogador1.largura + bola.largura + 5;
 		bola.bateu((bola.y+(bola.altura/2)) - (jogador1.y+(jogador1.altura/2)));
 		hit.play();
 	}
 	else if(bolaP2 == true){
+		bola.x = jogador2.x - bola.largura - 5;
 		bola.bateu((bola.y+(bola.altura/2)) - (jogador2.y+(jogador2.altura/2)));
 		hit.play();
 	}
