@@ -51,9 +51,9 @@ function setup(){
 		prazer.play();
 	}
 
-	jogador1 = new Jogador(40, (altura/2 - 35), 20, 70, "W", "S", 0, 255, 0);
-	jogador2 = new Jogador((largura - 60), (altura/2 - 35), 20, 70, "&", "(", 255, 0, 0);
-	bola = new Bola((largura/2 - 5), (altura/2 - 5), 10, 10, 20);
+	jogador1 = new Jogador(40, (altura/2 - 35), 32, 70, "W", "S", 0, 255, 0);
+	jogador2 = new Jogador((largura - 60), (altura/2 - 35), 32, 70, "&", "(", 255, 0, 0);
+	bola = new Bola((largura/2 - 5), (altura/2 - 5), 10, 10, 25);
 	frames = 60;
 	score1Y = 40;
 	score2Y = 40;
