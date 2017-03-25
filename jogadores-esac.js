@@ -5,7 +5,7 @@ function Jogador(x, y, largura, altura, up, down, r, g, b){
 	this.largura = largura;
 	this.altura = altura;
 	this.velocidadeX = 0;
-	this.velocidadeY = 12;
+	this.velocidadeY = 16;
 	this.movimentos = [false, false];
 	this.up = up;
 	this.down = down;
