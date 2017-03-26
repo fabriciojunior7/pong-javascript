@@ -1,149 +1,121 @@
-var frames;
-var largura;
-var altura;
-var tela;
-var logo;
-var score1;
-var score2;
+var largura, altura;
+var frames = 10;
+var escala, hit;
+var jogador1;
+var comida;
 
-var iniciar;
-var start;
-var hit;
-var lose;
-var win;
+var lose, mordida1, mordida2, mordida3, gongo1, gongo2, start, somAleatorio;
+var happy1, happy2, happy3;
+
+var rodadas = 0;
+var perdeu;
 
 function preload(){
-	iniciar = loadSound("sons/iniciar.mp3");
-	start = loadSound("sons/start.mp3");
-	hit = loadSound("sons/hit.mp3");
-	win = loadSound("sons/you-win.mp3");
 	lose = loadSound("sons/lose.mp3");
+	mordida1 = loadSound("sons/mordida1.mp3");
+	mordida2 = loadSound("sons/mordida2.mp3");
+	mordida3 = loadSound("sons/mordida3.mp3");
+	start = loadSound("sons/start.mp3");
+	happy1 = loadSound("sons/start.mp3");
+	happy2 = happy1;
+	happy3 = happy1;
 }
 
 function setup(){
-	largura = windowWidth;
-	altura = windowHeight;
+	if(!(rodadas > 0)){
+		somAleatorio = int(random(1, 4));
+		if(somAleatorio == 1){happy1 = loadSound("sons/musicas/happy1.mp3", loaded);}
+		else if(somAleatorio == 2){happy2 = loadSound("sons/musicas/happy2.mp3", loaded);}
+		else if(somAleatorio == 3){happy3 = loadSound("sons/musicas/happy3.mp3", loaded);}
+		else{happy3 = loadSound("sons/musicas/happy3.mp3", loaded);}
+	}
+	rodadas++;
+	perdeu = false;
+	//largura = windowWidth;
+	//altura = windowHeight;
+	largura = 300;
+	altura = 300;
+	escala = 10;
 	tela = createCanvas(largura, altura);
+	tela.position((windowWidth/2.0)-150, (windowHeight/2.0)-150);
+	frameRate(frames);
 
-	iniciar.play();
+	lose.setVolume(0.5);
 
-	jogador1 = new Jogador(50, (altura/2 - 35), 15, 70, "W", "S", 0, 255, 0);
-	jogador2 = new Jogador((largura - 60), (altura/2 - 35), 15, 70, "&", "(", 255, 0, 0);
-	bola = new Bola((largura/2 - 5), (altura/2 - 5), 10, 10, int(largura*0.0075));
-	frames = 60;
-	score1Y = 40;
-	score2Y = 40;
+	//Objetos
+	jogador1 = new Cobra(150, 0, escala, escala, escala, [38, 40, 37, 39]);
+	jogador1.udlr = [false, true, false, false];
+	comida = new Comida(0, 0, escala, escala);
+	comida.mover(largura, altura, [jogador1.x, jogador1.y], jogador1.calda);
+}
+
+function loaded(){
+	if(somAleatorio == 1){
+		happy1.setVolume(0.1);
+		happy1.loop();
+	}
+	else if(somAleatorio == 2){
+		happy2.setVolume(0.1);
+		happy2.loop();
+	}
+	else if(somAleatorio == 3){
+		happy3.setVolume(0.3);
+		happy3.loop();
+	}
+	else{
+		happy3.setVolume(0.3);
+		happy3.loop();
+	}
 }
 
 function draw(){
-	frameRate(frames);
-	background(0, 0, 0);
+	background(0);
+	grade();
 	fill(255);
-	textSize(10);
-	logo = text("Fabricio Junior", 5, 15);
-	textSize(38);
-	stroke(255, 255, 255);
-	line(largura/2, 0, largura/2, altura);
-	//Atualizar Posicoes
-	jogador1.atualizarPosicao();
-	jogador2.atualizarPosicao();
-	bola.atualizarPosicao(altura);
-	if(bola.x < 0){
-		jogador2.score++;
-		bola.movimentar = false;
-		bola.x = largura/2 - 5;
-		bola.y = altura/2 - 5;
-		bola.velocidadeX = bola.velocidadeXInicial;
-		bola.velocidadeY = 0;
-		if(jogador2.score >= 5){
-			fim(2);
-		}
-		else{
-			lose.play();
-		}
+	textSize(8);
+	text("Fabricio Junior", 5, 12);
+	//Rodar
+	hit = collideRectRect(jogador1.x+1, jogador1.y+1, jogador1.largura-2, jogador1.altura-2, comida.x, comida.y, comida.largura, comida.altura);
+	if(hit == true){
+		jogador1.comeu();
+		comida.mover(largura, altura, [jogador1.x, jogador1.y], jogador1.calda);
+		somAleatorio = int(random(1, 4));
+		if(somAleatorio == 1){mordida1.play();}
+		else if(somAleatorio == 2){mordida2.play();}
+		else if(somAleatorio == 3){mordida3.play();}
 	}
-	else if(bola.x > largura){
-		jogador1.score++;
-		bola.movimentar = false;
-		bola.x = largura/2 - 5;
-		bola.y = altura/2 - 5;
-		bola.velocidadeX = -bola.velocidadeXInicial;
-		bola.velocidadeY = 0;
-		if(jogador1.score >= 5){
-			fim(1);
-		}
-		else{
-			lose.play();
-		}
-	}
+	jogador1.atualizarPosicao(largura, altura);
 	//Desenhar
-	jogador1.desenhar();
-	jogador2.desenhar();
-	bola.desenhar();
-	//text(bola.velocidadeX, 50, 50);
-	fill(jogador1.r, jogador1.g, jogador1.b);
-	score1 = text(jogador1.score, (largura/2 - largura*0.055), score1Y);
-	fill(jogador2.r, jogador2.g, jogador2.b);
-	score2 = text(jogador2.score, (largura/2 + largura*0.03), score2Y);
-
-	bolaP1 = collideRectRect(jogador1.x, jogador1.y, jogador1.largura, jogador1.altura, bola.x, bola.y, bola.largura, bola.altura);
-	bolaP2 = collideRectRect(jogador2.x, jogador2.y, jogador2.largura, jogador2.altura, bola.x, bola.y, bola.largura, bola.altura);
-
-	if(bolaP1 == true){
-		bola.x = jogador1.x + jogador1.largura + bola.largura + 5;
-		bola.bateu((bola.y+(bola.altura/2)) - (jogador1.y+(jogador1.altura/2)));
-		hit.play();
-	}
-	else if(bolaP2 == true){
-		bola.x = jogador2.x - bola.largura - 5;
-		bola.bateu((bola.y+(bola.altura/2)) - (jogador2.y+(jogador2.altura/2)));
-		hit.play();
-	}
-
-	//if(frameCount % 480 == 0 && bola.movimentar == true){
-	//	print("OI");
-	//}
+	comida.desenharComida();
+	jogador1.desenharCobra();
+	//print("X: " + jogador1.x + "| Y: " + jogador1.y);
+	fill(0, 255, 0);
+	textSize(12);
+	//text(jogador1.calda.length, 5, 24);
+	if(jogador1.calda.length <= 9){text(jogador1.calda.length, 285, 15);}
+	else if(jogador1.calda.length > 9 && jogador1.calda.length <= 99){text(jogador1.calda.length, 280, 15);}
+	else if(jogador1.calda.length > 99 && jogador1.calda.length <= 999){text(jogador1.calda.length, 275, 15);}
+	else{text(jogador1.calda.length, 270, 15);}
+	
 }
 
 function keyPressed(){
-	jogador1.botaoPressionado(key);
-	jogador2.botaoPressionado(key);
-	if(keyCode == 36){
-		window.location.href = "ping-pong-esac.html";
+	jogador1.botaoPressionado(keyCode);
+	if(keyCode == 32 && perdeu == true){
+		setup();
+		loop();
 	}
 }
 
-function keyReleased(){
-	jogador1.botaoSolto(key);
-	jogador2.botaoSolto(key);
-	if(key == " " && (jogador1.score >= 5 || jogador2.score >= 5)){
-		window.location.href = "ping-pong.html";
-	}
-	else if(key == " " && bola.movimentar == false){
-		start.play();
-		bola.movimentar = true;
-		bola.velocidadeY = random(-4, 4);
-	}
-}
-
-function fim(vencedor) {
-	win.play();
-	jogador1.y = 2*altura;
-	jogador2.y = 2*altura;
-	bola.y = 2*altura;
-	score1Y = 2*altura;
-	score2Y = 2*altura;
-	if(vencedor == 1){
-		background(0, 255, 0);
-		fill(255);
-		textSize(50);
-		text("Verde Venceu!", largura/2-150, altura/2);
-	}
-	else if(vencedor == 2){
-		background(255, 0, 0);
-		fill(255);
-		textSize(50);
-		text("Vermelho Venceu!", largura/2-190, altura/2);
-	}
-	noLoop();
+function grade(){
+	stroke(255);
+	//Topo
+	line(0, 0, largura, 0);
+	//Base
+	line(0, altura-1, largura-1, altura-1);
+	//Esquerda
+	line(0, 0, 0, altura-1);
+	//Direita
+	line(largura-1, 0, largura-1, altura-1);
+	stroke(0);
 }
