@@ -171,8 +171,6 @@ function draw(){
 function keyPressed(){
 	jogador1.botaoPressionado(keyCode);
 	jogador2.botaoPressionado(keyCode);
-	print(j1colidiu);
-	print(j2colidiu);
 	if((keyCode == 32) && ((j1colidiu == true || j2colidiu == true) || (jogoEmpatado == true))){
 		print("Dentro");
 		setup();
